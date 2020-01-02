@@ -1,0 +1,14 @@
+{
+  "name": "wisepaas.scada.nodejs.sdk.sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sample.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "garypan1990@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "wisepaas-scada-edge-nodejs-sdk":"1.0.0"
+  }
+}
