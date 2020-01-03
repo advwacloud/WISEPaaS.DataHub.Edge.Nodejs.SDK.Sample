@@ -6,7 +6,7 @@ const options = {
     APIUrl: 'https://api-dccs.wise-paas.com/'
   },
   // MQTT: {
-  //   hostName: 'PC031206',
+  //   hostName: '127.0.01',
   //   port: 1883,
   //   username: 'admin',
   //   password: 'admin',
