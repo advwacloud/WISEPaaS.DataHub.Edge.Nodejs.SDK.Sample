@@ -38,8 +38,6 @@ let sendTimer = {};
 const edgeAgent = new edgeSDK.EdgeAgent(options);
 
 edgeAgent.connect();
-// setTimeout(edgeAgent.disconnect.bind(edgeAgent), 5000);
-// setTimeout(edgeAgent.connect.bind(edgeAgent), 10000);
 
 edgeAgent.events.on('connected', () => {
   console.log('Connect success !');
