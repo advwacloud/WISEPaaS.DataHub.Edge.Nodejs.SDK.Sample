@@ -1,5 +1,4 @@
 const edgeSDK = require('wisepaas-scada-edge-nodejs-sdk');
-const { MessageType } = require('./common/enum');
 const options = {
   connectType: 1, // MQTT=0 DCCS=1
   DCCS: {
@@ -21,6 +20,13 @@ const options = {
   deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
   dataRecover: true // need to recover data or not when disconnected
+};
+const MessageType =
+{
+  WriteValue: 0,
+  WriteConfig: 1,
+  TimeSync: 2,
+  ConfigAck: 3
 };
 const deviceCount = 1;
 const analogTagNum = 3;
