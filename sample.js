@@ -1,22 +1,25 @@
 const edgeSDK = require('wisepaas-scada-edge-nodejs-sdk');
+const connectType = 2; // MQTT=1 DCCS=2
+const type = 1; // Gateway=1 Device=2
+// const TCP = 1;
 const options = {
-  connectType: 1, // MQTT=0 DCCS=1
+  connectType: connectType,
   DCCS: {
     credentialKey: '9bd96d1062cafe3eeb9295ff5301dak2',
     APIUrl: 'https://api-dccs.wise-paas.com/'
   },
   // MQTT: {
-  //   hostName: '127.0.01',
+  //   hostName: '127.0.0.1',
   //   port: 1883,
   //   username: 'admin',
   //   password: 'admin',
-  //   protocolType: 0
+  //   protocolType: TCP
   // },
   useSecure: false,
   autoReconnect: true,
   reconnectInterval: 1000,
   scadaId: 'ca05f6ca-4e1c-4b10-b72b-f6aec8a46efb', // getting from SCADA portal
-  type: 0, // Choice your edge is Gateway or Device, Default is Gateway
+  type: type, // Choice your edge is Gateway or Device, Default is Gateway
   deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
   dataRecover: true // need to recover data or not when disconnected
@@ -92,26 +95,26 @@ function configPrepare () {
     deviceConfig.description = 'Device ' + i;
     for (let j = 1; j <= analogTagNum; j++) {
       const analogTagConfig = new edgeSDK.EdgeAgent.AnalogTagConfig();
-      analogTagConfig.name += j;
-      analogTagConfig.description += j;
+      analogTagConfig.name = 'ATag' + j;
+      analogTagConfig.description = 'ATag' + j;
       analogTagList.push(analogTagConfig);
     }
     for (let j = 1; j <= discreteTagNum; j++) {
       const discreteTagConfig = new edgeSDK.EdgeAgent.DiscreteTagConfig();
       discreteTagConfig.name = 'DTag' + j;
-      discreteTagConfig.description += j;
+      discreteTagConfig.description = 'DTag' + j;
       discreteTagList.push(discreteTagConfig);
     }
     for (let j = 1; j <= textTagNum; j++) {
       const textTagConfig = new edgeSDK.EdgeAgent.TextTagConfig();
       textTagConfig.name = 'TTag' + j;
-      textTagConfig.description += j;
+      textTagConfig.description = 'TTag' + j;
       textTagList.push(textTagConfig);
     }
     for (let j = 1; j <= arrayTagNum; j++) {
       const arrayTag = new edgeSDK.EdgeAgent.AnalogTagConfig();
       arrayTag.name = 'ArrayTag' + j;
-      arrayTag.description += j;
+      arrayTag.description = 'ArrayTag' + j;
       arrayTag.arraySize = 10;
       analogTagList.push(arrayTag);
     }
@@ -125,7 +128,9 @@ function configPrepare () {
   return edgeConfig;
 }
 function sendData (edgeConfig) {
-  if (Object.keys(edgeConfig).length === 0) return;
+  if (Object.keys(edgeConfig).length === 0) {
+    return;
+  }
   const data = prepareData(edgeConfig.scada.deviceList.length, analogTagNum, discreteTagNum, textTagNum, arrayTagNum);
   edgeAgent.sendData(data);
 }
