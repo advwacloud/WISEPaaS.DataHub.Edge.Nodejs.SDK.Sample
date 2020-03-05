@@ -1,5 +1,5 @@
 {
-  "name": "wisepaas.scada.nodejs.sdk.sample",
+  "name": "wisepaas-datahub-edge-nodejs-sdk.sample",
   "version": "1.0.0",
   "description": "",
   "main": "sample.js",
@@ -9,6 +9,6 @@
   "author": "garypan1990@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "wisepaas-scada-edge-nodejs-sdk":"1.0.0"
+    "wisepaas-scada-edge-nodejs-sdk": "1.0.0"
   }
 }
