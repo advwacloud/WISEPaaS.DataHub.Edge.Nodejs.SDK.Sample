@@ -9,6 +9,6 @@
   "author": "garypan1990@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "wisepaas-scada-edge-nodejs-sdk": "1.0.0"
+    "wisepaas-datahub-edge-nodejs-sdk": "1.0.2"
   }
 }

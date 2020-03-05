@@ -1,12 +1,12 @@
-const edgeSDK = require('wisepaas-scada-edge-nodejs-sdk');
+const edgeSDK = require('wisepaas-datahub-edge-nodejs-sdk');
 const connectType = 2; // MQTT=1 DCCS=2
 const type = 1; // Gateway=1 Device=2
 // const TCP = 1;
 const options = {
   connectType: connectType,
   DCCS: {
-    credentialKey: '9bd96d1062cafe3eeb9295ff5301dak2',
-    APIUrl: 'https://api-dccs.wise-paas.com/'
+    credentialKey: 'adcekc0f74837e3lqtdlkgfazn4i6qv8',
+    APIUrl: 'http://api-dccsv4-master.es.wise-paas.cn/'
   },
   // MQTT: {
   //   hostName: '127.0.0.1',
@@ -18,7 +18,7 @@ const options = {
   useSecure: false,
   autoReconnect: true,
   reconnectInterval: 1000,
-  scadaId: 'ca05f6ca-4e1c-4b10-b72b-f6aec8a46efb', // getting from SCADA portal
+  scadaId: '6579dba6-9d19-44a2-b645-c2319c8f1315', // getting from SCADA portal
   type: type, // Choice your edge is Gateway or Device, Default is Gateway
   deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
