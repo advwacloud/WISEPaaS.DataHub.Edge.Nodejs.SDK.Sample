@@ -53,7 +53,7 @@ edgeAgent.events.on('disconnected', () => {
 });
 edgeAgent.events.on('messageReceived', (msg) => {
   switch (msg.type) {
-    case edgeSDK.constant.MessageType.WriteValue:
+    case edgeSDK.constant.messageType.WriteValue:
       for (const device of msg.message.deviceList) {
         console.log('DeviceId: ' + device.id);
         for (const tag of device.tagList) {
@@ -67,7 +67,7 @@ edgeAgent.events.on('messageReceived', (msg) => {
         }
       }
       break;
-    case edgeSDK.constant.MessageType.ConfigAck:
+    case edgeSDK.constant.messageType.ConfigAck:
       console.log('Upload Config Result: ' + msg.message);
       break;
   }
