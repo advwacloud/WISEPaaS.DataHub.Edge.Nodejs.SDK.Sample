@@ -1,35 +1,28 @@
 const edgeSDK = require('wisepaas-datahub-edge-nodejs-sdk');
-const connectType = 2; // MQTT=1 DCCS=2
-const type = 1; // Gateway=1 Device=2
-// const TCP = 1;
+const path = require('path');
+
 const options = {
-  connectType: connectType,
+  connectType: edgeSDK.constant.connectType.DCCS,
   DCCS: {
     credentialKey: 'adcekc0f74837e3lqtdlkgfazn4i6qv8',
-    APIUrl: 'http://api-dccsv4-master.es.wise-paas.cn/'
+    APIUrl: 'https://api-dccs-ensaas.sa.wise-paas.com/'
   },
   // MQTT: {
   //   hostName: '127.0.0.1',
   //   port: 1883,
   //   username: 'admin',
   //   password: 'admin',
-  //   protocolType: TCP
+  //   protocolType: edgeSDK.constant.protocol.TCP
   // },
   useSecure: false,
   autoReconnect: true,
   reconnectInterval: 1000,
-  scadaId: '6579dba6-9d19-44a2-b645-c2319c8f1315', // getting from SCADA portal
-  type: type, // Choice your edge is Gateway or Device, Default is Gateway
+  nodeId: '6579dba6-9d19-44a2-b645-c2319c8f1315', // getting from datahub portal
+  type: edgeSDK.constant.edgeType.Gateway, // Choice your edge is Gateway or Device, Default is Gateway
   deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
-  dataRecover: true // need to recover data or not when disconnected
-};
-const MessageType =
-{
-  WriteValue: 0,
-  WriteConfig: 1,
-  TimeSync: 2,
-  ConfigAck: 3
+  dataRecover: true, // need to recover data or not when disconnected
+  ovpnPath: path.resolve(process.cwd(), './C.ovpn')
 };
 const deviceCount = 1;
 const analogTagNum = 3;
@@ -61,7 +54,7 @@ edgeAgent.events.on('disconnected', () => {
 });
 edgeAgent.events.on('messageReceived', (msg) => {
   switch (msg.type) {
-    case MessageType.WriteValue:
+    case edgeSDK.constant.MessageType.WriteValue:
       for (const device of msg.message.deviceList) {
         console.log('DeviceId: ' + device.id);
         for (const tag of device.tagList) {
@@ -75,7 +68,7 @@ edgeAgent.events.on('messageReceived', (msg) => {
         }
       }
       break;
-    case MessageType.ConfigAck:
+    case edgeSDK.constant.MessageType.ConfigAck:
       console.log('Upload Config Result: ' + msg.message);
       break;
   }
@@ -122,7 +115,7 @@ function configPrepare () {
     deviceConfig.discreteTagList = discreteTagList;
     deviceConfig.textTagList = textTagList;
 
-    edgeConfig.scada.deviceList.push(deviceConfig);
+    edgeConfig.node.deviceList.push(deviceConfig);
   }
 
   return edgeConfig;
@@ -131,7 +124,7 @@ function sendData (edgeConfig) {
   if (Object.keys(edgeConfig).length === 0) {
     return;
   }
-  const data = prepareData(edgeConfig.scada.deviceList.length, analogTagNum, discreteTagNum, textTagNum, arrayTagNum);
+  const data = prepareData(edgeConfig.node.deviceList.length, analogTagNum, discreteTagNum, textTagNum, arrayTagNum);
   edgeAgent.sendData(data);
 }
 function prepareData (numDeviceCount, numATagCount, numDTagCount, numTTagCount, numAryTagCount) {
