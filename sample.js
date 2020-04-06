@@ -1,5 +1,4 @@
 const edgeSDK = require('wisepaas-datahub-edge-nodejs-sdk');
-const path = require('path');
 
 const options = {
   connectType: edgeSDK.constant.connectType.DCCS,
@@ -22,7 +21,7 @@ const options = {
   deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
   dataRecover: true, // need to recover data or not when disconnected
-  ovpnPath: path.resolve(process.cwd(), './C.ovpn')
+  ovpnPath: '' // set the path of your .ovpn file, only for linux
 };
 const deviceCount = 1;
 const analogTagNum = 3;
