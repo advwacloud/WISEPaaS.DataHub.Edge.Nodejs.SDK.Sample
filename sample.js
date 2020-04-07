@@ -37,8 +37,7 @@ edgeAgent.connect();
 edgeAgent.events.on('connected', () => {
   console.log('Connect success !');
   const edgeConfig = configPrepare();
-  const actionType = 1;// create=1
-  edgeAgent.uploadConfig(actionType, edgeConfig).then((res) => {
+  edgeAgent.uploadConfig(edgeSDK.constant.actionType.create, edgeConfig).then((res) => {
     // when mqtt disconnect happened, and automatically reconnect
     // clear interval to prevent duplicate time interval call
     clearInterval(sendTimer);
