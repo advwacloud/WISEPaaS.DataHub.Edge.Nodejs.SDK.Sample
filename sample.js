@@ -73,31 +73,31 @@ edgeAgent.events.on('messageReceived', (msg) => {
 });
 
 function configPrepare () {
-  const edgeConfig = new edgeSDK.EdgeAgent.EdgeConfig();
+  const edgeConfig = new edgeSDK.EdgeConfig();
   const analogTagList = [];
   const discreteTagList = [];
   const textTagList = [];
 
   for (let i = 1; i <= deviceCount; i++) {
-    const deviceConfig = new edgeSDK.EdgeAgent.DeviceConfig();
+    const deviceConfig = new edgeSDK.DeviceConfig();
     deviceConfig.id = 'Device' + i;
     deviceConfig.name = 'Device ' + i;
     deviceConfig.type = 'Smart Device';
     deviceConfig.description = 'Device ' + i;
     for (let j = 1; j <= analogTagNum; j++) {
-      const analogTagConfig = new edgeSDK.EdgeAgent.AnalogTagConfig();
+      const analogTagConfig = new edgeSDK.AnalogTagConfig();
       analogTagConfig.name = 'ATag' + j;
       analogTagConfig.description = 'ATag' + j;
       analogTagList.push(analogTagConfig);
     }
     for (let j = 1; j <= discreteTagNum; j++) {
-      const discreteTagConfig = new edgeSDK.EdgeAgent.DiscreteTagConfig();
+      const discreteTagConfig = new edgeSDK.DiscreteTagConfig();
       discreteTagConfig.name = 'DTag' + j;
       discreteTagConfig.description = 'DTag' + j;
       discreteTagList.push(discreteTagConfig);
     }
     for (let j = 1; j <= textTagNum; j++) {
-      const textTagConfig = new edgeSDK.EdgeAgent.TextTagConfig();
+      const textTagConfig = new edgeSDK.TextTagConfig();
       textTagConfig.name = 'TTag' + j;
       textTagConfig.description = 'TTag' + j;
       textTagList.push(textTagConfig);
@@ -126,24 +126,24 @@ function sendData (edgeConfig) {
   edgeAgent.sendData(data);
 }
 function prepareData (numDeviceCount, numATagCount, numDTagCount, numTTagCount, numAryTagCount) {
-  const data = new edgeSDK.EdgeAgent.EdgeData();
+  const data = new edgeSDK.EdgeData();
   for (let i = 1; i <= numDeviceCount; i++) {
     for (let j = 1; j <= numATagCount; j++) {
-      const ATag = new edgeSDK.EdgeAgent.Tag();
+      const ATag = new edgeSDK.EdgeDataTag();
       ATag.deviceId = 'Device' + i;
       ATag.tagName = 'ATag' + j;
       ATag.value = Math.floor(Math.random() * 100) + 1;
       data.tagList.push(ATag);
     }
     for (let j = 1; j <= numDTagCount; j++) {
-      const DTag = new edgeSDK.EdgeAgent.Tag();
+      const DTag = new edgeSDK.EdgeDataTag();
       DTag.deviceId = 'Device' + i;
       DTag.tagName = 'DTag' + j;
       DTag.value = j % 2;
       data.tagList.push(DTag);
     }
     for (let j = 1; j <= numTTagCount; j++) {
-      const TTag = new edgeSDK.EdgeAgent.Tag();
+      const TTag = new edgeSDK.EdgeDataTag();
       TTag.deviceId = 'Device' + i;
       TTag.tagName = 'TTag' + j;
       TTag.value = 'TEST' + j.toString();
@@ -154,7 +154,7 @@ function prepareData (numDeviceCount, numATagCount, numDTagCount, numTTagCount, 
       for (let k = 0; k < 10; k++) {
         dic[k.toString()] = Math.floor(Math.random() * 100) + 1;
       }
-      const AryTag = new edgeSDK.EdgeAgent.Tag();
+      const AryTag = new edgeSDK.EdgeDataTag();
       AryTag.deviceId = 'Device' + i;
       AryTag.tagName = 'ArrayTag' + j;
       AryTag.value = dic;
@@ -165,9 +165,9 @@ function prepareData (numDeviceCount, numATagCount, numDTagCount, numTTagCount, 
   return data;
 }
 function updateDeviceStatus (numDeviceCount) {
-  const devieStatus = new edgeSDK.EdgeAgent.EdgeDeviceStatus();
+  const devieStatus = new edgeSDK.EdgeDeviceStatus();
   for (let i = 1; i <= numDeviceCount; i++) {
-    const device = new edgeSDK.EdgeAgent.DeviceStatus();
+    const device = new edgeSDK.DeviceStatus();
     device.id = 'Device' + i;
     device.status = 1;
     devieStatus.deviceList.push(device);
