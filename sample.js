@@ -103,7 +103,7 @@ function configPrepare () {
       textTagList.push(textTagConfig);
     }
     for (let j = 1; j <= arrayTagNum; j++) {
-      const arrayTag = new edgeSDK.EdgeAgent.AnalogTagConfig();
+      const arrayTag = new edgeSDK.AnalogTagConfig();
       arrayTag.name = 'ArrayTag' + j;
       arrayTag.description = 'ArrayTag' + j;
       arrayTag.arraySize = 10;
