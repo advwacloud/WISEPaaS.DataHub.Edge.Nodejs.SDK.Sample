@@ -28,20 +28,22 @@ const analogTagNum = 3;
 const discreteTagNum = 3;
 const textTagNum = 3;
 const arrayTagNum = 3;
+const arrayTagSize = 10;
+
 let sendTimer = {};
+let edgeConfig = {};
 
-const edgeAgent = new edgeSDK.EdgeAgent(options);
-
+let edgeAgent = new edgeSDK.EdgeAgent(options);
 edgeAgent.connect();
 
 edgeAgent.events.on('connected', () => {
   console.log('Connect success !');
-  const edgeConfig = configPrepare();
+  edgeConfig = prepareConfig();
   edgeAgent.uploadConfig(edgeSDK.constant.actionType.create, edgeConfig).then((res) => {
     // when mqtt disconnect happened, and automatically reconnect
     // clear interval to prevent duplicate time interval call
     clearInterval(sendTimer);
-    sendTimer = setInterval(sendData.bind(null, edgeConfig), 1000);
+    sendTimer = setInterval(sendData, 1000);
   }, error => {
     console.log('upload config error');
     console.log(error);
@@ -53,16 +55,10 @@ edgeAgent.events.on('disconnected', () => {
 edgeAgent.events.on('messageReceived', (msg) => {
   switch (msg.type) {
     case edgeSDK.constant.messageType.WriteValue:
-      for (const device of msg.message.deviceList) {
+      for (let device of msg.message.deviceList) {
         console.log('DeviceId: ' + device.id);
-        for (const tag of device.tagList) {
-          if (typeof tag.value === 'object') {
-            for (const aryTag in tag.value) {
-              console.log('TagName: ' + tag.name + ', Index: ' + aryTag + ', Value: ' + tag.value[aryTag]);
-            }
-          } else {
-            console.log('TagName: ' + tag.name + ', Value: ' + tag.value);
-          }
+        for (let tag of device.tagList) {
+          console.log('TagName: ' + tag.name + ', Value: ' + tag.value);
         }
       }
       break;
@@ -72,38 +68,38 @@ edgeAgent.events.on('messageReceived', (msg) => {
   }
 });
 
-function configPrepare () {
-  const edgeConfig = new edgeSDK.EdgeConfig();
-  const analogTagList = [];
-  const discreteTagList = [];
-  const textTagList = [];
+function prepareConfig () {
+  let edgeConfig = new edgeSDK.EdgeConfig();
+  let analogTagList = [];
+  let discreteTagList = [];
+  let textTagList = [];
 
   for (let i = 1; i <= deviceCount; i++) {
-    const deviceConfig = new edgeSDK.DeviceConfig();
+    let deviceConfig = new edgeSDK.DeviceConfig();
     deviceConfig.id = 'Device' + i;
     deviceConfig.name = 'Device ' + i;
     deviceConfig.type = 'Smart Device';
     deviceConfig.description = 'Device ' + i;
     for (let j = 1; j <= analogTagNum; j++) {
-      const analogTagConfig = new edgeSDK.AnalogTagConfig();
+      let analogTagConfig = new edgeSDK.AnalogTagConfig();
       analogTagConfig.name = 'ATag' + j;
       analogTagConfig.description = 'ATag' + j;
       analogTagList.push(analogTagConfig);
     }
     for (let j = 1; j <= discreteTagNum; j++) {
-      const discreteTagConfig = new edgeSDK.DiscreteTagConfig();
+      let discreteTagConfig = new edgeSDK.DiscreteTagConfig();
       discreteTagConfig.name = 'DTag' + j;
       discreteTagConfig.description = 'DTag' + j;
       discreteTagList.push(discreteTagConfig);
     }
     for (let j = 1; j <= textTagNum; j++) {
-      const textTagConfig = new edgeSDK.TextTagConfig();
+      let textTagConfig = new edgeSDK.TextTagConfig();
       textTagConfig.name = 'TTag' + j;
       textTagConfig.description = 'TTag' + j;
       textTagList.push(textTagConfig);
     }
     for (let j = 1; j <= arrayTagNum; j++) {
-      const arrayTag = new edgeSDK.AnalogTagConfig();
+      let arrayTag = new edgeSDK.AnalogTagConfig();
       arrayTag.name = 'ArrayTag' + j;
       arrayTag.description = 'ArrayTag' + j;
       arrayTag.arraySize = 10;
@@ -118,43 +114,43 @@ function configPrepare () {
 
   return edgeConfig;
 }
-function sendData (edgeConfig) {
+function sendData () {
   if (Object.keys(edgeConfig).length === 0) {
     return;
   }
-  const data = prepareData(edgeConfig.node.deviceList.length, analogTagNum, discreteTagNum, textTagNum, arrayTagNum);
+  let data = prepareData();
   edgeAgent.sendData(data);
 }
-function prepareData (numDeviceCount, numATagCount, numDTagCount, numTTagCount, numAryTagCount) {
-  const data = new edgeSDK.EdgeData();
-  for (let i = 1; i <= numDeviceCount; i++) {
-    for (let j = 1; j <= numATagCount; j++) {
-      const ATag = new edgeSDK.EdgeDataTag();
+function prepareData () {
+  let data = new edgeSDK.EdgeData();
+  for (let i = 1; i <= deviceCount; i++) {
+    for (let j = 1; j <= analogTagNum; j++) {
+      let ATag = new edgeSDK.EdgeDataTag();
       ATag.deviceId = 'Device' + i;
       ATag.tagName = 'ATag' + j;
       ATag.value = Math.floor(Math.random() * 100) + 1;
       data.tagList.push(ATag);
     }
-    for (let j = 1; j <= numDTagCount; j++) {
-      const DTag = new edgeSDK.EdgeDataTag();
+    for (let j = 1; j <= discreteTagNum; j++) {
+      let DTag = new edgeSDK.EdgeDataTag();
       DTag.deviceId = 'Device' + i;
       DTag.tagName = 'DTag' + j;
       DTag.value = j % 2;
       data.tagList.push(DTag);
     }
-    for (let j = 1; j <= numTTagCount; j++) {
-      const TTag = new edgeSDK.EdgeDataTag();
+    for (let j = 1; j <= textTagNum; j++) {
+      let TTag = new edgeSDK.EdgeDataTag();
       TTag.deviceId = 'Device' + i;
       TTag.tagName = 'TTag' + j;
       TTag.value = 'TEST' + j.toString();
       data.tagList.push(TTag);
     }
-    for (let j = 1; j <= numAryTagCount; j++) {
-      const dic = {};
-      for (let k = 0; k < 10; k++) {
+    for (let j = 1; j <= arrayTagNum; j++) {
+      let dic = {};
+      for (let k = 0; k < arrayTagSize; k++) {
         dic[k.toString()] = Math.floor(Math.random() * 100) + 1;
       }
-      const AryTag = new edgeSDK.EdgeDataTag();
+      let AryTag = new edgeSDK.EdgeDataTag();
       AryTag.deviceId = 'Device' + i;
       AryTag.tagName = 'ArrayTag' + j;
       AryTag.value = dic;
@@ -165,9 +161,9 @@ function prepareData (numDeviceCount, numATagCount, numDTagCount, numTTagCount, 
   return data;
 }
 function updateDeviceStatus (numDeviceCount) {
-  const devieStatus = new edgeSDK.EdgeDeviceStatus();
+  let devieStatus = new edgeSDK.EdgeDeviceStatus();
   for (let i = 1; i <= numDeviceCount; i++) {
-    const device = new edgeSDK.DeviceStatus();
+    let device = new edgeSDK.DeviceStatus();
     device.id = 'Device' + i;
     device.status = 1;
     devieStatus.deviceList.push(device);
