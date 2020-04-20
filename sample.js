@@ -1,3 +1,4 @@
+'use strict';
 const edgeSDK = require('wisepaas-datahub-edge-nodejs-sdk');
 
 const options = {
