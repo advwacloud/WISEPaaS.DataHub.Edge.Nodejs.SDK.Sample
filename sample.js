@@ -54,7 +54,7 @@ edgeAgent.events.on('disconnected', () => {
 });
 edgeAgent.events.on('messageReceived', (msg) => {
   switch (msg.type) {
-    case edgeSDK.constant.messageType.WriteValue:
+    case edgeSDK.constant.messageType.writeValue:
       for (let device of msg.message.deviceList) {
         console.log('DeviceId: ' + device.id);
         for (let tag of device.tagList) {
@@ -62,7 +62,7 @@ edgeAgent.events.on('messageReceived', (msg) => {
         }
       }
       break;
-    case edgeSDK.constant.messageType.ConfigAck:
+    case edgeSDK.constant.messageType.configAck:
       console.log('Upload Config Result: ' + msg.message);
       break;
   }
@@ -165,8 +165,64 @@ function updateDeviceStatus (numDeviceCount) {
   for (let i = 1; i <= numDeviceCount; i++) {
     let device = new edgeSDK.DeviceStatus();
     device.id = 'Device' + i;
-    device.status = 1;
+    device.status = edgeSDK.constant.status.online;
     devieStatus.deviceList.push(device);
   }
   edgeAgent.sendDeviceStatus(devieStatus);
+}
+
+function deleteDeviceConfig () {
+  let edgeConfig = new edgeSDK.EdgeConfig();
+  for (let i = 1; i <= deviceCount; i++) {
+    let deviceConfig = new edgeSDK.DeviceConfig();
+    deviceConfig.id = 'Device' + i;
+    edgeConfig.node.deviceList.push(deviceConfig);
+  }
+}
+
+function deleteTagConfig () {
+  let edgeConfig = new edgeSDK.EdgeConfig();
+  let analogTagList = [];
+  let discreteTagList = [];
+  let textTagList = [];
+
+  for (let i = 1; i <= deviceCount; i++) {
+    let deviceConfig = new edgeSDK.DeviceConfig();
+    deviceConfig.id = 'Device' + i;
+    deviceConfig.name = 'Device ' + i;
+    deviceConfig.type = 'Smart Device';
+    deviceConfig.description = 'Device ' + i;
+    for (let j = 1; j <= analogTagNum; j++) {
+      let analogTagConfig = new edgeSDK.AnalogTagConfig();
+      analogTagConfig.name = 'ATag' + j;
+      analogTagList.push(analogTagConfig);
+    }
+    for (let j = 1; j <= discreteTagNum; j++) {
+      let discreteTagConfig = new edgeSDK.DiscreteTagConfig();
+      discreteTagConfig.name = 'DTag' + j;
+      discreteTagList.push(discreteTagConfig);
+    }
+    for (let j = 1; j <= textTagNum; j++) {
+      let textTagConfig = new edgeSDK.TextTagConfig();
+      textTagConfig.name = 'TTag' + j;
+      textTagList.push(textTagConfig);
+    }
+    for (let j = 1; j <= arrayTagNum; j++) {
+      let arrayTag = new edgeSDK.AnalogTagConfig();
+      arrayTag.name = 'ArrayTag' + j;
+      analogTagList.push(arrayTag);
+    }
+    deviceConfig.analogTagList = analogTagList;
+    deviceConfig.discreteTagList = discreteTagList;
+    deviceConfig.textTagList = textTagList;
+
+    edgeConfig.node.deviceList.push(deviceConfig);
+  }
+
+  return edgeConfig;
+}
+
+function deleteAllConfig () {
+  let edgeConfig = new edgeSDK.EdgeConfig();
+  return edgeConfig;
 }
