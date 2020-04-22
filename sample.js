@@ -179,6 +179,7 @@ function deleteDeviceConfig () {
     deviceConfig.id = 'Device' + i;
     edgeConfig.node.deviceList.push(deviceConfig);
   }
+  return edgeConfig;
 }
 
 function deleteTagConfig () {
