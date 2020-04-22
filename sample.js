@@ -4,7 +4,7 @@ const edgeSDK = require('wisepaas-datahub-edge-nodejs-sdk');
 const options = {
   connectType: edgeSDK.constant.connectType.DCCS,
   DCCS: {
-    credentialKey: 'adcekc0f74837e3lqtdlkgfazn4i6qv8',
+    credentialKey: 'f2e4c0a1072cbdfc8b3a251c5538ad0r',
     APIUrl: 'https://api-dccs-ensaas.sa.wise-paas.com/'
   },
   // MQTT: {
@@ -17,7 +17,7 @@ const options = {
   useSecure: false,
   autoReconnect: true,
   reconnectInterval: 1000,
-  nodeId: '6579dba6-9d19-44a2-b645-c2319c8f1315', // getting from datahub portal
+  nodeId: 'fe3455c7-fd89-4b3a-83ec-a08cf3a5c0b7', // getting from datahub portal
   type: edgeSDK.constant.edgeType.Gateway, // Choice your edge is Gateway or Device, Default is Gateway
   deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
@@ -157,6 +157,7 @@ function prepareData () {
       AryTag.value = dic;
       data.tagList.push(AryTag);
     }
+    data.ts = Date.now();
   }
 
   return data;
