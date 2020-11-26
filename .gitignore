@@ -1,5 +1,5 @@
 /node_modules
 /.vscode
 package-lock.json
-recover.sqlite.db
-config.json
+/*.sqlite.db
+/*.json
