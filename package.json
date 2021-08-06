@@ -1,6 +1,6 @@
 {
   "name": "wisepaas-datahub-edge-nodejs-sdk.sample",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "sample.js",
   "scripts": {
@@ -9,6 +9,6 @@
   "author": "garypan1990@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "wisepaas-datahub-edge-nodejs-sdk": "^1.0.5"
+    "wisepaas-datahub-edge-nodejs-sdk": "^1.0.6"
   }
 }
