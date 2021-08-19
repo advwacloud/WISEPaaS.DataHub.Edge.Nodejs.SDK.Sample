@@ -19,7 +19,7 @@ const options = {
   reconnectInterval: 1000,
   nodeId: 'fe3455c7-fd89-4b3a-83ec-a08cf3a5c0b7', // getting from datahub portal
   type: edgeSDK.constant.edgeType.Gateway, // Choice your edge is Gateway or Device, Default is Gateway
-  deviceId: 'Device1', // If type is Device, DeviceId must be filled
+  // deviceId: 'Device1', // If type is Device, DeviceId must be filled
   heartbeat: 60000, // default is 60 seconds,
   dataRecover: true, // need to recover data or not when disconnected
   ovpnPath: '' // set the path of your .ovpn file, only for linux
@@ -78,7 +78,7 @@ function prepareConfig () {
   for (let i = 1; i <= deviceCount; i++) {
     let deviceConfig = new edgeSDK.DeviceConfig();
     deviceConfig.id = 'Device' + i;
-    deviceConfig.name = 'Device ' + i;
+    deviceConfig.name = 'Device' + i;
     deviceConfig.type = 'Smart Device';
     deviceConfig.description = 'Device ' + i;
     for (let j = 1; j <= analogTagNum; j++) {
